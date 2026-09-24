@@ -1,19 +1,25 @@
+```js
 console.log("NEW SCRIPT LOADED");
+
+/* =========================
+   MỞ MÓN QUÀ
+========================= */
+
 function showSurprise() {
 
     const gift = document.getElementById("giftBox");
 
-if(gift){
-    gift.style.transition = "0.5s";
-    gift.style.transform = "scale(0) rotate(360deg)";
-}
+    if (gift) {
+        gift.style.transition = "0.5s";
+        gift.style.transform = "scale(0) rotate(360deg)";
+    }
 
     document.getElementById("hero").style.display = "none";
-
     document.getElementById("surprise").style.display = "block";
 
     document.getElementById("surprise").scrollIntoView({
-        behavior: "smooth"
+        behavior: "smooth",
+        block: "start"
     });
 
     if (typeof confetti === "function") {
@@ -26,47 +32,26 @@ if(gift){
 
     const music = document.getElementById("music");
 
-    music.currentTime = 0.3;
+    if (music) {
+        music.currentTime = 0.3;
 
-    music.play()
-    .then(() => {
-        console.log("Music started");
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-}
-
-let sliderInterval;
-
-function showGallery() {
-
-    document.getElementById("surprise").style.display = "none";
-    document.getElementById("gallery").style.display = "block";
-    document.getElementById("videoSection").style.display = "block";
-
-    document.getElementById("gallery").scrollIntoView({
-        behavior: "smooth"
-    });
-
-    if (!sliderInterval) {
-        sliderInterval = setInterval(nextPhoto, 3000);
-    }
-}
-const text = "You are the best friend ever ❤️";
-let i = 0;
-
-function typeWriter() {
-    if (i < text.length) {
-        document.getElementById("typing").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 80);
+        music.play()
+            .then(() => {
+                console.log("Music started");
+            })
+            .catch((err) => {
+                console.log("Music chưa thể tự phát:", err);
+            });
     }
 }
 
-window.addEventListener("load", function () {
-    typeWriter();
-});
+
+/* =========================
+   GALLERY
+========================= */
+
+let sliderInterval = null;
+let isChangingPhoto = false;
 
 const photos = [
     "image/1.jpg",
@@ -78,69 +63,237 @@ const photos = [
     "image/7.jpg",
     "image/8.jpg",
     "image/9.jpg",
-    "image/10.jpg",
+    "image/10.jpg"
 ];
+
 let current = 0;
+
+
+/* Preload ảnh để chuyển ảnh mượt hơn */
+
+function preloadPhotos() {
+
+    photos.forEach((photo) => {
+
+        const img = new Image();
+        img.src = photo;
+
+    });
+
+}
+
+
+/* Hiển thị gallery */
+
+function showGallery() {
+
+    document.getElementById("surprise").style.display = "none";
+
+    document.getElementById("gallery").style.display = "block";
+
+    document.getElementById("videoSection").style.display = "block";
+
+    document.getElementById("gallery").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    preloadPhotos();
+
+    /*
+        Chỉ tạo 1 interval.
+        Không tạo thêm interval nếu đã có.
+    */
+
+    if (sliderInterval === null) {
+
+        sliderInterval = setInterval(() => {
+
+            changePhoto(1);
+
+        }, 4000);
+
+    }
+}
+
+
+/* Chuyển ảnh */
+
+function changePhoto(direction) {
+
+    if (isChangingPhoto) {
+        return;
+    }
+
+    const slider = document.getElementById("slider");
+
+    if (!slider) {
+        return;
+    }
+
+    isChangingPhoto = true;
+
+    let nextIndex = current + direction;
+
+    if (nextIndex >= photos.length) {
+        nextIndex = 0;
+    }
+
+    if (nextIndex < 0) {
+        nextIndex = photos.length - 1;
+    }
+
+    /*
+        Load ảnh tiếp theo trước.
+        Khi ảnh đã load xong mới đổi ảnh hiện tại.
+    */
+
+    const nextImage = new Image();
+
+    nextImage.src = photos[nextIndex];
+
+    nextImage.onload = function () {
+
+        slider.style.opacity = "0";
+
+        setTimeout(() => {
+
+            slider.src = photos[nextIndex];
+
+            current = nextIndex;
+
+            slider.style.opacity = "1";
+
+            setTimeout(() => {
+
+                isChangingPhoto = false;
+
+            }, 350);
+
+        }, 250);
+
+    };
+
+    nextImage.onerror = function () {
+
+        console.log("Không tìm thấy ảnh:", photos[nextIndex]);
+
+        isChangingPhoto = false;
+
+    };
+}
+
+
+/* Ảnh tiếp theo */
 
 function nextPhoto() {
 
-    current++;
-
-    if (current >= photos.length) {
-        current = 0;
-    }
-    document.getElementById("slider").style.opacity = "0";
-    
-    setTimeout(() => {
-
-        document.getElementById("slider").src = photos[current];
-        document.getElementById("slider").style.opacity = "1";
-
-    }, 300);
+    changePhoto(1);
 
 }
+
+
+/* Ảnh trước */
 
 function prevPhoto() {
 
-    current--;
+    changePhoto(-1);
 
-    if (current < 0) {
-        current = photos.length - 1;
+}
+
+
+/* =========================
+   HIỂN THỊ THƯ / QUÀ
+========================= */
+
+function showLetter() {
+
+    const letterSection = document.getElementById("letterSection");
+
+    if (!letterSection) {
+        return;
     }
 
-    document.getElementById("slider").style.opacity = "0";
+    /*
+        Hiện phần thư / quà
+    */
+
+    letterSection.style.display = "block";
+
+    /*
+        QUAN TRỌNG:
+        Không tự động nhảy xuống phần kết nữa.
+    */
 
     setTimeout(() => {
 
-        document.getElementById("slider").src = photos[current];
-        document.getElementById("slider").style.opacity = "1";
+        letterSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 
-    }, 300);
+    }, 100);
+
+    /*
+        Không mở thanksSection ở đây.
+        Không scroll xuống cuối.
+    */
 
 }
-function showLetter(){
 
-    document.getElementById("letterSection").style.display = "block";
 
-    document.getElementById("letterSection").scrollIntoView({
-        behavior:"smooth"
-    });
+/* =========================
+   CHỮ CHẠY
+========================= */
 
-  setTimeout(function(){
+const text = "You are the best friend ever ❤️";
 
-    document.getElementById("thanksSection").style.display = "block";
+let i = 0;
 
-    document.getElementById("thanksSection").scrollIntoView({
-        behavior:"smooth"
-    });
+function typeWriter() {
 
-    setTimeout(() => {
-        fireworkShow();
-    }, 800);
+    const typing = document.getElementById("typing");
 
-},1000);
+    if (!typing) {
+        return;
+    }
+
+    if (i < text.length) {
+
+        typing.innerHTML += text.charAt(i);
+
+        i++;
+
+        setTimeout(typeWriter, 80);
+
+    }
+
 }
-setInterval(function(){
+
+
+/* =========================
+   LOAD TRANG
+========================= */
+
+window.addEventListener("load", function () {
+
+    typeWriter();
+
+    /*
+        Preload ảnh ngay từ đầu
+        để khi mở gallery ảnh chuyển mượt hơn.
+    */
+
+    preloadPhotos();
+
+});
+
+
+/* =========================
+   TIM BAY
+========================= */
+
+setInterval(function () {
 
     const heart = document.createElement("div");
 
@@ -148,41 +301,63 @@ setInterval(function(){
 
     heart.innerHTML = "❤️";
 
-   heart.style.left = Math.random() * window.innerWidth + "px";
-   heart.style.fontSize = (20 + Math.random() * 20) + "px";
+    heart.style.left =
+        Math.random() * window.innerWidth + "px";
+
+    heart.style.fontSize =
+        (20 + Math.random() * 20) + "px";
 
     heart.style.bottom = "-30px";
 
     document.body.appendChild(heart);
 
-    setTimeout(function(){
+    setTimeout(function () {
 
         heart.remove();
 
-    },5000);
+    }, 5000);
 
-},800);
+}, 800);
+
+
+/* =========================
+   CONFETTI NHẸ
+========================= */
+
 if (typeof confetti === "function") {
 
     setInterval(() => {
 
         confetti({
+
             particleCount: 5,
+
             spread: 60,
+
             origin: {
                 x: Math.random(),
                 y: 0
             }
+
         });
 
     }, 1000);
 
 }
+
+
+/* =========================
+   PHÁO HOA
+========================= */
+
 function fireworkShow() {
 
     if (typeof confetti !== "function") {
+
         console.log("Confetti library not loaded");
+
         return;
+
     }
 
     for (let i = 0; i < 8; i++) {
@@ -190,13 +365,21 @@ function fireworkShow() {
         setTimeout(() => {
 
             confetti({
+
                 particleCount: 150,
+
                 spread: 120,
+
                 startVelocity: 50,
+
                 origin: {
+
                     x: Math.random(),
+
                     y: Math.random() * 0.6
+
                 }
+
             });
 
         }, i * 500);
@@ -204,56 +387,90 @@ function fireworkShow() {
     }
 
 }
+
+
+/* =========================
+   LOADER
+========================= */
+
 window.addEventListener("load", function () {
 
     setTimeout(function () {
 
-        const loader = document.getElementById("loader");
+        const loader =
+            document.getElementById("loader");
 
         if (loader) {
+
             loader.style.opacity = "0";
 
             setTimeout(function () {
+
                 loader.style.display = "none";
+
             }, 500);
+
         }
 
     }, 2000);
 
 });
-document.addEventListener("mousemove", function(e){
 
-    const sparkle = document.createElement("div");
+
+/* =========================
+   HIỆU ỨNG LẤP LÁNH
+========================= */
+
+document.addEventListener("mousemove", function (e) {
+
+    const sparkle =
+        document.createElement("div");
 
     sparkle.className = "sparkle";
 
-    sparkle.style.left = e.pageX + "px";
-    sparkle.style.top = e.pageY + "px";
+    sparkle.style.left =
+        e.pageX + "px";
+
+    sparkle.style.top =
+        e.pageY + "px";
 
     document.body.appendChild(sparkle);
 
     setTimeout(() => {
+
         sparkle.remove();
+
     }, 800);
 
 });
+
+
+/* =========================
+   BÓNG BAY
+========================= */
+
 setInterval(() => {
 
-    const balloon = document.createElement("div");
+    const balloon =
+        document.createElement("div");
 
     balloon.className = "balloon";
 
     balloon.innerHTML = "🎈";
 
-    balloon.style.left = Math.random() * window.innerWidth + "px";
+    balloon.style.left =
+        Math.random() * window.innerWidth + "px";
 
-    balloon.style.fontSize = (40 + Math.random() * 30) + "px";
+    balloon.style.fontSize =
+        (40 + Math.random() * 30) + "px";
 
     document.body.appendChild(balloon);
 
     setTimeout(() => {
+
         balloon.remove();
+
     }, 10000);
 
 }, 2500);
-  
+```
