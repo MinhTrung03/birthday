@@ -63,7 +63,10 @@ const photos = [
     "image/7.jpg",
     "image/8.jpg",
     "image/9.jpg",
-    "image/10.jpg"
+    "image/10.jpg",
+    "image/11.jpg",
+    "image/12.jpg",
+    "image/13.jpg",
 ];
 
 let current = 0;
