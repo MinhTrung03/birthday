@@ -69,10 +69,16 @@ window.addEventListener("load", function () {
 });
 
 const photos = [
-    "image/photo1.jpeg",
-    "image/photo2.jpeg",
-    "image/photo3.jpeg",
-    "image/photo4.jpeg"
+    "image/1.jpeg",
+    "image/2.jpeg",
+    "image/3.jpeg",
+    "image/4.jpeg",
+    "image/5.jpeg",
+    "image/6.jpeg",
+    "image/7.jpeg",
+    "image/8.jpeg",
+    "image/9.jpeg",
+    "image/10.jpeg",
 ];
 let current = 0;
 
