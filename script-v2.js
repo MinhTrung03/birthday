@@ -1,8 +1,9 @@
-console.log("SCRIPT V2 LOADED");
+console.log("SCRIPT V3 LOADED");
 
 /* =========================
    MỞ MÓN QUÀ
 ========================= */
+
 function showSurprise() {
     const gift = document.getElementById("giftBox");
     const hero = document.getElementById("hero");
@@ -20,6 +21,7 @@ function showSurprise() {
 
     if (surprise) {
         surprise.style.display = "block";
+
         surprise.scrollIntoView({
             behavior: "smooth",
             block: "start"
@@ -30,7 +32,9 @@ function showSurprise() {
         confetti({
             particleCount: 200,
             spread: 120,
-            origin: { y: 0.6 }
+            origin: {
+                y: 0.6
+            }
         });
     }
 
@@ -100,15 +104,17 @@ function showGallery() {
 
     if (gallery) {
         gallery.style.display = "block";
-
-        gallery.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
     }
 
     if (videoSection) {
         videoSection.style.display = "block";
+    }
+
+    if (gallery) {
+        gallery.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
     }
 
     preloadPhotos();
@@ -122,7 +128,7 @@ function showGallery() {
 
 
 /* =========================
-   CHUYỂN ẢNH
+   CHUYỂN ẢNH MƯỢT
 ========================= */
 
 function changePhoto(direction) {
@@ -161,11 +167,16 @@ function changePhoto(direction) {
             setTimeout(function () {
                 isChangingPhoto = false;
             }, 350);
+
         }, 250);
     };
 
     nextImage.onerror = function () {
-        console.log("Không tìm thấy ảnh:", photos[nextIndex]);
+        console.log(
+            "Không tìm thấy ảnh:",
+            photos[nextIndex]
+        );
+
         isChangingPhoto = false;
     };
 
@@ -173,10 +184,13 @@ function changePhoto(direction) {
 }
 
 
+/* =========================
+   NÚT ẢNH
+========================= */
+
 function nextPhoto() {
     changePhoto(1);
 }
-
 
 function prevPhoto() {
     changePhoto(-1);
@@ -184,11 +198,12 @@ function prevPhoto() {
 
 
 /* =========================
-   HIỂN THỊ PHẦN QUÀ
+   PHẦN THƯ / QUÀ
 ========================= */
 
 function showLetter() {
-    const letterSection = document.getElementById("letterSection");
+    const letterSection =
+        document.getElementById("letterSection");
 
     if (!letterSection) {
         return;
@@ -209,18 +224,23 @@ function showLetter() {
    CHỮ CHẠY
 ========================= */
 
-const text = "Mi là người bạn tuyệt vời nhất ❤️";
+const typingText =
+    "You are the best friend ever ❤️";
+
 let typingIndex = 0;
 
 function typeWriter() {
-    const typing = document.getElementById("typing");
+    const typing =
+        document.getElementById("typing");
 
     if (!typing) {
         return;
     }
 
-    if (typingIndex < text.length) {
-        typing.innerHTML += text.charAt(typingIndex);
+    if (typingIndex < typingText.length) {
+        typing.innerHTML +=
+            typingText.charAt(typingIndex);
+
         typingIndex++;
 
         setTimeout(typeWriter, 80);
@@ -229,28 +249,37 @@ function typeWriter() {
 
 
 /* =========================
-   KHI TRANG LOAD XONG
+   LOAD TRANG
 ========================= */
 
 window.addEventListener("load", function () {
-    console.log("Trang đã load xong");
+
+    console.log("PAGE LOADED");
 
     typeWriter();
+
     preloadPhotos();
 
-    const loader = document.getElementById("loader");
+    const loader =
+        document.getElementById("loader");
 
     if (!loader) {
-        console.log("Không tìm thấy loader");
+        console.log("Không tìm thấy loader!");
         return;
     }
 
     setTimeout(function () {
+
         loader.style.opacity = "0";
 
         setTimeout(function () {
+
             loader.style.display = "none";
+
+            console.log("Loader đã tắt!");
+
         }, 500);
+
     }, 5000);
 });
 
@@ -260,16 +289,19 @@ window.addEventListener("load", function () {
 ========================= */
 
 setInterval(function () {
-    const heart = document.createElement("div");
+
+    const heart =
+        document.createElement("div");
 
     heart.classList.add("heart");
+
     heart.innerHTML = "❤️";
 
     heart.style.left =
         Math.random() * window.innerWidth + "px";
 
     heart.style.fontSize =
-        20 + Math.random() * 20 + "px";
+        (20 + Math.random() * 20) + "px";
 
     heart.style.bottom = "-30px";
 
@@ -278,6 +310,7 @@ setInterval(function () {
     setTimeout(function () {
         heart.remove();
     }, 5000);
+
 }, 800);
 
 
@@ -286,17 +319,21 @@ setInterval(function () {
 ========================= */
 
 setInterval(function () {
-    if (typeof confetti === "function") {
-        confetti({
-            particleCount: 5,
-            spread: 60,
-            origin: {
-                x: Math.random(),
-                y: 0
-            }
-        });
+
+    if (typeof confetti !== "function") {
+        return;
     }
-}, 3000);
+
+    confetti({
+        particleCount: 5,
+        spread: 60,
+        origin: {
+            x: Math.random(),
+            y: 0
+        }
+    });
+
+}, 1000);
 
 
 /* =========================
@@ -304,13 +341,20 @@ setInterval(function () {
 ========================= */
 
 function fireworkShow() {
+
     if (typeof confetti !== "function") {
-        console.log("Confetti library not loaded");
+
+        console.log(
+            "Confetti library not loaded"
+        );
+
         return;
     }
 
     for (let i = 0; i < 8; i++) {
+
         setTimeout(function () {
+
             confetti({
                 particleCount: 150,
                 spread: 120,
@@ -320,6 +364,7 @@ function fireworkShow() {
                     y: Math.random() * 0.6
                 }
             });
+
         }, i * 500);
     }
 }
@@ -329,19 +374,28 @@ function fireworkShow() {
    HIỆU ỨNG LẤP LÁNH
 ========================= */
 
-document.addEventListener("mousemove", function (e) {
-    const sparkle = document.createElement("div");
+document.addEventListener(
+    "mousemove",
+    function (e) {
 
-    sparkle.className = "sparkle";
-    sparkle.style.left = e.pageX + "px";
-    sparkle.style.top = e.pageY + "px";
+        const sparkle =
+            document.createElement("div");
 
-    document.body.appendChild(sparkle);
+        sparkle.className = "sparkle";
 
-    setTimeout(function () {
-        sparkle.remove();
-    }, 800);
-});
+        sparkle.style.left =
+            e.pageX + "px";
+
+        sparkle.style.top =
+            e.pageY + "px";
+
+        document.body.appendChild(sparkle);
+
+        setTimeout(function () {
+            sparkle.remove();
+        }, 800);
+    }
+);
 
 
 /* =========================
@@ -349,20 +403,27 @@ document.addEventListener("mousemove", function (e) {
 ========================= */
 
 setInterval(function () {
-    const balloon = document.createElement("div");
+
+    const balloon =
+        document.createElement("div");
 
     balloon.className = "balloon";
+
     balloon.innerHTML = "🎈";
 
     balloon.style.left =
         Math.random() * window.innerWidth + "px";
 
     balloon.style.fontSize =
-        40 + Math.random() * 30 + "px";
+        (40 + Math.random() * 30) + "px";
 
     document.body.appendChild(balloon);
 
     setTimeout(function () {
         balloon.remove();
     }, 10000);
+
 }, 2500);
+
+
+console.log("SCRIPT V3 READY");
