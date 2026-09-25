@@ -390,29 +390,32 @@ function fireworkShow() {
 
 }
 
-
 /* =========================
    LOADER
 ========================= */
 
 window.addEventListener("load", function () {
 
+    const loader = document.getElementById("loader");
+
+    if (!loader) {
+        console.log("Không tìm thấy loader!");
+        return;
+    }
+
+    console.log("Loader đang chạy...");
+
     setTimeout(function () {
 
-        const loader =
-            document.getElementById("loader");
+        loader.style.opacity = "0";
 
-        if (loader) {
+        setTimeout(function () {
 
-            loader.style.opacity = "0";
+            loader.style.display = "none";
 
-            setTimeout(function () {
+            console.log("Loader đã tắt!");
 
-                loader.style.display = "none";
-
-            }, 500);
-
-        }
+        }, 500);
 
     }, 5000);
 
