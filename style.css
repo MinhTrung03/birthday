@@ -735,20 +735,35 @@ button:hover{
 }
 
 .special-message{
-    font-size: 19px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 15px;
+
+    font-size: 18px;
     line-height: 1.6;
     font-weight: 600;
+
     color: #ff4f8b;
     text-align: center;
-    max-width: 90%;
-    margin: 0 auto;
+
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 /* Hiển thị đẹp trên điện thoại */
 @media (max-width: 600px){
+
     .special-message{
-        font-size: 17px;
+        width: 100%;
+        max-width: 100%;
+
+        padding: 0 5px;
+
+        font-size: 15px;
         line-height: 1.6;
-        padding: 0 10px;
+
+        overflow-wrap: anywhere;
+        word-break: normal;
     }
 }
