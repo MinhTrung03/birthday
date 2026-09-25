@@ -733,3 +733,22 @@ button:hover{
     }
 
 }
+
+.special-message{
+    font-size: 19px;
+    line-height: 1.6;
+    font-weight: 600;
+    color: #ff4f8b;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+/* Hiển thị đẹp trên điện thoại */
+@media (max-width: 600px){
+    .special-message{
+        font-size: 17px;
+        line-height: 1.6;
+        padding: 0 10px;
+    }
+}
