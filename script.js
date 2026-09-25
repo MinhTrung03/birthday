@@ -1,5 +1,5 @@
 ```js
-console.log("NEW SCRIPT LOADED");
+console.log("TEST 123");
 
 /* =========================
    MỞ MÓN QUÀ
