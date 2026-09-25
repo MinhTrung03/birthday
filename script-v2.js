@@ -219,6 +219,30 @@ function showLetter() {
     }, 100);
 }
 
+/* =========================
+   HIỆN PHẦN CUỐI
+========================= */
+
+function showThanks() {
+
+    const thanksSection =
+        document.getElementById("thanksSection");
+
+    if (!thanksSection) {
+        return;
+    }
+
+    thanksSection.style.display = "block";
+
+    setTimeout(function () {
+
+        thanksSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }, 100);
+}
 
 /* =========================
    CHỮ CHẠY
