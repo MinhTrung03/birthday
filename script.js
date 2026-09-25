@@ -45,7 +45,6 @@ function showSurprise() {
     }
 }
 
-
 /* =========================
    GALLERY
 ========================= */
@@ -415,7 +414,7 @@ window.addEventListener("load", function () {
 
         }
 
-    }, 2000);
+    }, 5000);
 
 });
 
